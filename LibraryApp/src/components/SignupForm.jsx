@@ -43,11 +43,34 @@ const SignupForm = () => {
 			alert("Passwords do not match.");
 			return;
 		}
+		// try{
+		//     const response = await fetch("http://localhost:3000/api/signup",{
+		//     method:"POST",
+		//     headers:{
+		//         "content-Type": "applicatiion/json",
+
+		//     },
+		//     body:JSON.stringify({
+		//         username,
+		//         firstname,
+		//         lastname,
+		//         password,
+		//     })
+		// })
+		// if(!response.ok){
+		//     cons errorData= await.response.json()
+		//     throw new Error(errorData.message||"Signup failed!")
+
+		// }
 		console.log(username, firstname, lastname);
 		login();
 		alert("Signup successful!");
 		navigate("/");
 	};
+	// catch(error){
+	//     console.error("Signup error", error)
+	//     alert("Signup failed: " +error.message)
+	// }
 
 	const formField = (label, name, type = "text") => (
 		<Box display="flex" alignItems="center" mb={2}>

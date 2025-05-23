@@ -19,7 +19,7 @@ const LoginForm = () => {
 		e.preventDefault();
 		const { identifier, password } = credentials;
 		// Simulate authentication (replace with real API call)
-		if (identifier === "admin@test.com" && password === "Password1") {
+		if (identifier === "admin" && password === "Password1") {
 			login();
 			alert("Login successful!");
 			navigate("/");
@@ -38,6 +38,7 @@ const LoginForm = () => {
 				fullWidth
 				required
 				margin="normal"
+				sx={{ backgroundColor: "white" }}
 			/>
 			<TextField
 				label="Password"
@@ -48,6 +49,7 @@ const LoginForm = () => {
 				fullWidth
 				required
 				margin="normal"
+				sx={{ backgroundColor: "white" }}
 			/>
 			<Button type="submit" variant="contained" fullWidth sx={{ mt: 2 }}>
 				Log In

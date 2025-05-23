@@ -5,36 +5,41 @@ import { useNavigate } from "react-router-dom";
 const LoginPage = () => {
 	const navigate = useNavigate();
 	return (
-		<Container
-			maxWidth="sm"
-			sx={{
-				display: "flex",
-				flexDirection: "column",
-				justifyContent: "start",
-				alignItems: "center",
-				minHeight: "100vh",
-				mt: 5,
-			}}
-		>
-			<Paper elevation={3} sx={{ padding: 4, width: "100%" }}>
-				<Typography variant="h5" align="center" gutterBottom>
-					Login
-				</Typography>
-				<LoginForm />
+		<Box sx={{ backgroundColor: "#f8d8b6", minHeight: "100vh" }}>
+			<Container
+				maxWidth="sm"
+				sx={{
+					display: "flex",
+					flexDirection: "column",
+					justifyContent: "start",
+					alignItems: "center",
+					minHeight: "100vh",
+					py: 6,
+				}}
+			>
+				<Paper
+					elevation={3}
+					sx={{ padding: 4, width: "100%", backgroundColor: "#f5ebdd" }}
+				>
+					<Typography variant="h5" align="center" gutterBottom>
+						Login
+					</Typography>
+					<LoginForm />
 
-				{/* Signup option */}
-				<Box mt={3} textAlign="center">
-					<Typography variant="body2">Don't have an account?</Typography>
-					<Button
-						variant="outlined"
-						sx={{ mt: 1 }}
-						onClick={() => navigate("/signup")}
-					>
-						Sign Up
-					</Button>
-				</Box>
-			</Paper>
-		</Container>
+					{/* Signup option */}
+					<Box mt={3} textAlign="center">
+						<Typography variant="body2">Don't have an account?</Typography>
+						<Button
+							variant="outlined"
+							sx={{ mt: 1 }}
+							onClick={() => navigate("/signup")}
+						>
+							Sign Up
+						</Button>
+					</Box>
+				</Paper>
+			</Container>
+		</Box>
 	);
 };
 

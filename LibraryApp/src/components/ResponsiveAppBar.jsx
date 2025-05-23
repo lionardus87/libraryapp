@@ -15,14 +15,18 @@ import { useNavigate } from "react-router";
 import ButtonBase from "@mui/material/ButtonBase";
 import { useAuth } from "../contexts/AuthContext";
 
-function ResponsiveAppBar() {
+export default function ResponsiveAppBar() {
 	const [anchorElNav, setAnchorElNav] = React.useState(null);
 	const { isAuthenticated, logout } = useAuth();
-	const guestPages = ["Browse books", "Contact US"];
-	const adminPages = isAuthenticated
-		? [...guestPages, "Update books"]
-		: guestPages;
 	const navigate = useNavigate();
+
+	const pages = [
+		{ label: "Browse Books", path: "/books" },
+		{ label: "Contact Us", path: "/contactus" },
+	];
+	if (isAuthenticated) {
+		pages.push({ label: "Update Books", path: "/admin/books" });
+	}
 
 	const handleOpenNavMenu = (event) => {
 		setAnchorElNav(event.currentTarget);
@@ -30,6 +34,11 @@ function ResponsiveAppBar() {
 
 	const handleCloseNavMenu = () => {
 		setAnchorElNav(null);
+	};
+
+	const handleNavigate = (path) => {
+		handleCloseNavMenu();
+		navigate(path);
 	};
 
 	return (
@@ -90,9 +99,9 @@ function ResponsiveAppBar() {
 							onClose={handleCloseNavMenu}
 							sx={{ display: { xs: "block", md: "none" } }}
 						>
-							{adminPages.map((page) => (
-								<MenuItem key={page} onClick={handleCloseNavMenu}>
-									<Typography sx={{ textAlign: "center" }}>{page}</Typography>
+							{pages.map(({ label, path }) => (
+								<MenuItem key={label} onClick={() => handleNavigate(path)}>
+									<Typography textAlign="center">{label}</Typography>
 								</MenuItem>
 							))}
 						</Menu>
@@ -118,7 +127,7 @@ function ResponsiveAppBar() {
 							fontFamily: "monospace",
 							fontWeight: 700,
 							letterSpacing: ".3rem",
-							color: "inherit",
+							color: "black",
 							textDecoration: "none",
 						}}
 					>
@@ -126,13 +135,13 @@ function ResponsiveAppBar() {
 					</Typography>
 
 					<Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-						{adminPages.map((page) => (
+						{pages.map(({ label, path }) => (
 							<Button
-								key={page}
-								onClick={handleCloseNavMenu}
-								sx={{ my: 2, color: "white", display: "block" }}
+								key={label}
+								onClick={() => handleNavigate(path)}
+								sx={{ my: 2, color: "black", display: "block" }}
 							>
-								{page}
+								{label}
 							</Button>
 						))}
 					</Box>
@@ -154,4 +163,3 @@ function ResponsiveAppBar() {
 		</AppBar>
 	);
 }
-export default ResponsiveAppBar;
