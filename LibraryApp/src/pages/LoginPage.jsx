@@ -1,7 +1,9 @@
-import { Container, Typography, Paper } from "@mui/material";
+import { Container, Typography, Paper, Box, Button } from "@mui/material";
 import LoginForm from "../components/LoginForm";
+import { useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
+	const navigate = useNavigate();
 	return (
 		<Container
 			maxWidth="sm"
@@ -19,6 +21,18 @@ const LoginPage = () => {
 					Login
 				</Typography>
 				<LoginForm />
+
+				{/* Signup option */}
+				<Box mt={3} textAlign="center">
+					<Typography variant="body2">Don't have an account?</Typography>
+					<Button
+						variant="outlined"
+						sx={{ mt: 1 }}
+						onClick={() => navigate("/signup")}
+					>
+						Sign Up
+					</Button>
+				</Box>
 			</Paper>
 		</Container>
 	);

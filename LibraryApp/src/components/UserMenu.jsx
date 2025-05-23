@@ -1,44 +1,45 @@
 import React from "react";
-import { IconButton, Tooltip, Menu, MenuItem, Typography } from "@mui/material";
+import { IconButton, Box, Typography } from "@mui/material";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { useAuth } from "../contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
 
-export default function UserMenu({ onMenuSelect }) {
-	const [anchorEl, setAnchorEl] = React.useState(null);
+export default function UserMenu() {
+	const { isAuthenticated, logout } = useAuth();
+	const navigate = useNavigate();
 
-	const { isAuthenticated } = useAuth();
-
-	const settings = isAuthenticated
-		? ["Profile", "Cart", "Logout"]
-		: ["Profile", "Cart", "Login"];
-
-	const handleOpen = (event) => setAnchorEl(event.currentTarget);
-	const handleClose = (setting) => {
-		setAnchorEl(null);
-		if (setting) onMenuSelect(setting);
+	const handleClick = () => {
+		if (isAuthenticated) {
+			logout();
+			navigate("/");
+		} else {
+			navigate("/login");
+		}
 	};
 
 	return (
-		<>
-			<Tooltip title="Open settings">
-				<IconButton onClick={handleOpen} sx={{ p: 0 }}>
-					<AccountCircleIcon sx={{ color: "white", fontSize: 32 }} />
-				</IconButton>
-			</Tooltip>
-			<Menu
-				anchorEl={anchorEl}
-				open={Boolean(anchorEl)}
-				onClose={() => handleClose(null)}
-				sx={{ mt: "45px" }}
-				anchorOrigin={{ vertical: "top", horizontal: "right" }}
-				transformOrigin={{ vertical: "top", horizontal: "right" }}
+		<Box display="flex" alignItems="center" gap={1}>
+			{isAuthenticated && (
+				<Box display="flex" alignItems="center" sx={{ cursor: "pointer" }}>
+					<Typography variant="body1" sx={{ color: "white" }}>
+						Cart
+					</Typography>
+					<IconButton sx={{ color: "white" }} onClick={() => navigate("/cart")}>
+						<ShoppingCartIcon />
+					</IconButton>
+				</Box>
+			)}
+			<IconButton sx={{ color: "white" }} onClick={handleClick}>
+				<AccountCircleIcon />
+			</IconButton>
+			<Typography
+				variant="body1"
+				sx={{ color: "white", cursor: "pointer" }}
+				onClick={handleClick}
 			>
-				{settings.map((setting) => (
-					<MenuItem key={setting} onClick={() => handleClose(setting)}>
-						<Typography textAlign="center">{setting}</Typography>
-					</MenuItem>
-				))}
-			</Menu>
-		</>
+				{isAuthenticated ? "Logout" : "Login"}
+			</Typography>
+		</Box>
 	);
 }

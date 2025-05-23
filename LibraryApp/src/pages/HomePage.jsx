@@ -7,7 +7,7 @@ const HomePage = () => {
 		<Box sx={{ backgroundColor: "#f8d8b6", minHeight: "100vh" }}>
 			{/* Main Content */}
 			<Container sx={{ textAlign: "center" }}>
-				<Typography variant="h6" gutterBottom>
+				<Typography variant="h4" gutterBottom>
 					Location
 				</Typography>
 				<Card
@@ -22,7 +22,7 @@ const HomePage = () => {
 					<CarouselImage></CarouselImage>
 				</Card>
 
-				<Typography variant="h6" sx={{ mt: 4 }} gutterBottom>
+				<Typography variant="h4" sx={{ mt: 4 }} gutterBottom>
 					About Us
 				</Typography>
 				<Card
