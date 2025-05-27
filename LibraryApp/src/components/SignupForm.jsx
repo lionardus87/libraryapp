@@ -1,5 +1,5 @@
 import React, { useReducer } from "react";
-import { Box, Button, TextField, Typography } from "@mui/material";
+import { Box, Button, Container, TextField, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 
@@ -22,7 +22,7 @@ const initialFormState = {
 	repassword: "",
 };
 
-const SignupForm = () => {
+export default function SignupForm() {
 	const [formData, dispatch] = useReducer(formReducer, initialFormState);
 	const { login } = useAuth();
 	const navigate = useNavigate();
@@ -62,8 +62,19 @@ const SignupForm = () => {
 		//     throw new Error(errorData.message||"Signup failed!")
 
 		// }
+		const existingUsers = JSON.parse(localStorage.getItem("users")) || [];
+		const userExists = existingUsers.some((user) => user.username === username);
+
+		if (userExists) {
+			alert("Username already taken.");
+			return;
+		}
+
+		const newUser = { username, firstname, lastname, password };
+		localStorage.setItem("users", JSON.stringify([...existingUsers, newUser]));
+
 		console.log(username, firstname, lastname);
-		login();
+		login(username);
 		alert("Signup successful!");
 		navigate("/");
 	};
@@ -83,6 +94,7 @@ const SignupForm = () => {
 				onChange={handleChange}
 				variant="outlined"
 				size="small"
+				sx={{ backgroundColor: "white" }}
 			/>
 		</Box>
 	);
@@ -100,6 +112,4 @@ const SignupForm = () => {
 			</Button>
 		</Box>
 	);
-};
-
-export default SignupForm;
+}

@@ -10,7 +10,7 @@ const LoginForm = () => {
 	});
 	const { login } = useAuth();
 	const navigate = useNavigate();
-
+	console.log(login);
 	const handleChange = (e) => {
 		setCredentials({ ...credentials, [e.target.name]: e.target.value });
 	};
@@ -18,13 +18,17 @@ const LoginForm = () => {
 	const handleLogin = (e) => {
 		e.preventDefault();
 		const { identifier, password } = credentials;
-		// Simulate authentication (replace with real API call)
+
 		if (identifier === "admin" && password === "Password1") {
-			login();
-			alert("Login successful!");
+			login("admin");
+			alert("Login successful as Admin!");
+			navigate("/");
+		} else if (identifier === "member" && password === "Password1") {
+			login("member");
+			alert("Login successful as Member!");
 			navigate("/");
 		} else {
-			alert("Invalid email/username or password.");
+			alert("Invalid credentials");
 		}
 	};
 

@@ -14,18 +14,21 @@ import UserMenu from "./UserMenu";
 import { useNavigate } from "react-router";
 import ButtonBase from "@mui/material/ButtonBase";
 import { useAuth } from "../contexts/AuthContext";
+import { useLocation } from "react-router-dom";
 
 export default function ResponsiveAppBar() {
 	const [anchorElNav, setAnchorElNav] = React.useState(null);
-	const { isAuthenticated, logout } = useAuth();
+	const { userRole, logout } = useAuth();
 	const navigate = useNavigate();
+	const location = useLocation();
 
 	const pages = [
 		{ label: "Browse Books", path: "/books" },
 		{ label: "Contact Us", path: "/contactus" },
 	];
-	if (isAuthenticated) {
-		pages.push({ label: "Update Books", path: "/admin/books" });
+
+	if (userRole === "admin") {
+		pages.push({ label: "Add A Book", path: "/admin/addbooks" });
 	}
 
 	const handleOpenNavMenu = (event) => {
@@ -101,7 +104,9 @@ export default function ResponsiveAppBar() {
 						>
 							{pages.map(({ label, path }) => (
 								<MenuItem key={label} onClick={() => handleNavigate(path)}>
-									<Typography textAlign="center">{label}</Typography>
+									<Typography textAlign="center" color="black">
+										{label}
+									</Typography>
 								</MenuItem>
 							))}
 						</Menu>
@@ -127,7 +132,7 @@ export default function ResponsiveAppBar() {
 							fontFamily: "monospace",
 							fontWeight: 700,
 							letterSpacing: ".3rem",
-							color: "black",
+							color: "white",
 							textDecoration: "none",
 						}}
 					>
@@ -139,7 +144,13 @@ export default function ResponsiveAppBar() {
 							<Button
 								key={label}
 								onClick={() => handleNavigate(path)}
-								sx={{ my: 2, color: "black", display: "block" }}
+								sx={{
+									my: 2,
+									color: "white",
+									display: "block",
+									borderBottom: location.pathname === path ? "1px solid white" : "none",
+									borderRadius: 0,
+								}}
 							>
 								{label}
 							</Button>

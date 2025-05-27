@@ -1,7 +1,7 @@
 import { Container, Typography, Paper, Box } from "@mui/material";
-import SignupForm from "../components/SignupForm";
+import AddBookForm from "../components/AddBookForm";
 
-export default function SignupPage() {
+export default function AddBookPage() {
 	return (
 		<Box sx={{ backgroundColor: "#f8d8b6", minHeight: "100vh" }}>
 			<Container
@@ -20,9 +20,9 @@ export default function SignupPage() {
 					sx={{ padding: 4, width: "100%", backgroundColor: "#f5ebdd" }}
 				>
 					<Typography variant="h5" align="center" gutterBottom>
-						Sign Up
+						Add a Book
 					</Typography>
-					<SignupForm />
+					<AddBookForm />
 				</Paper>
 			</Container>
 		</Box>

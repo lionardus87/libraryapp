@@ -4,7 +4,7 @@ import { IconButton, Box, Typography, Divider } from "@mui/material";
 // import LinkedInIcon from "@mui/icons-material/LinkedIn";
 // import InstagramIcon from "@mui/icons-material/Instagram";
 
-const Footer = () => {
+export default function Footer() {
 	return (
 		<>
 			{/* Footer with Social Icons */}
@@ -17,7 +17,12 @@ const Footer = () => {
 					gap: 4,
 				}}
 			>
-				<Box display="flex" justifyContent="space-between" flexWrap="wrap">
+				<Box
+					display="flex"
+					justifyContent="space-between"
+					flexWrap="wrap"
+					color="secondary"
+				>
 					<Box mb={2} mx={3}>
 						<Typography variant="h6">Contact Us</Typography>
 						<Typography>Email: support@libraryapp.com.au</Typography>
@@ -35,12 +40,10 @@ const Footer = () => {
 
 				<Divider sx={{ my: 2 }} />
 
-				<Typography variant="body2" color="textSecondary" align="center">
+				<Typography variant="h6" color="offwhite" align="center">
 					© {new Date().getFullYear()} Library App. All rights reserved.
 				</Typography>
 			</Box>
 		</>
 	);
-};
-
-export default Footer;
+}

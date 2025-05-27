@@ -31,7 +31,7 @@ const LoginPage = () => {
 						<Typography variant="body2">Don't have an account?</Typography>
 						<Button
 							variant="outlined"
-							sx={{ mt: 1 }}
+							sx={{ mt: 1, backgroundColor: "white" }}
 							onClick={() => navigate("/signup")}
 						>
 							Sign Up

@@ -1,7 +1,7 @@
 import Carousel from "react-bootstrap/Carousel";
 import "bootstrap/dist/css/bootstrap.min.css"; // Just in case it's not already imported
 
-function CarouselImage() {
+export default function CarouselImage() {
 	return (
 		<Carousel style={{ height: "100%" }}>
 			<Carousel.Item>
@@ -42,5 +42,3 @@ function CarouselImage() {
 		</Carousel>
 	);
 }
-
-export default CarouselImage;

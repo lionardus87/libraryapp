@@ -1,13 +1,17 @@
-import React from "react";
-import { IconButton, Box, Typography } from "@mui/material";
+import React, { useState } from "react";
+import { IconButton, Box, Typography, Badge } from "@mui/material";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { useAuth } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { useCart } from "../contexts/CartContext";
+import CartMenu from "./CartMenu";
 
 export default function UserMenu() {
 	const { isAuthenticated, logout } = useAuth();
 	const navigate = useNavigate();
+	const { cartItems } = useCart();
+	const [drawerOpen, setDrawerOpen] = useState(false);
 
 	const handleClick = () => {
 		if (isAuthenticated) {
@@ -21,14 +25,19 @@ export default function UserMenu() {
 	return (
 		<Box display="flex" alignItems="center" gap={1}>
 			{isAuthenticated && (
-				<Box display="flex" alignItems="center" sx={{ cursor: "pointer" }}>
-					<Typography variant="body1" sx={{ color: "white" }}>
-						Cart
-					</Typography>
-					<IconButton sx={{ color: "white" }} onClick={() => navigate("/cart")}>
-						<ShoppingCartIcon />
-					</IconButton>
-				</Box>
+				<>
+					<Box display="flex" alignItems="center" sx={{ cursor: "pointer" }}>
+						<Typography variant="body1" sx={{ color: "white" }}>
+							Cart
+						</Typography>
+						<IconButton onClick={() => setDrawerOpen(true)} sx={{ color: "white" }}>
+							<Badge badgeContent={cartItems.length} color="error">
+								<ShoppingCartIcon />
+							</Badge>
+						</IconButton>
+					</Box>
+					<CartMenu open={drawerOpen} onClose={() => setDrawerOpen(false)} />
+				</>
 			)}
 			<IconButton sx={{ color: "white" }} onClick={handleClick}>
 				<AccountCircleIcon />
