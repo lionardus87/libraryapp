@@ -5,10 +5,11 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { useAuth } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "../contexts/CartContext";
-import CartMenu from "./CartMenu";
+import BorrowCartDrawer from "./BorrowCartDrawer";
 
 export default function UserMenu() {
-	const { isAuthenticated, logout } = useAuth();
+	const { auth, logout } = useAuth();
+	const isAuthenticated = !!auth?.username;
 	const navigate = useNavigate();
 	const { cartItems } = useCart();
 	const [drawerOpen, setDrawerOpen] = useState(false);
@@ -36,7 +37,7 @@ export default function UserMenu() {
 							</Badge>
 						</IconButton>
 					</Box>
-					<CartMenu open={drawerOpen} onClose={() => setDrawerOpen(false)} />
+					<BorrowCartDrawer open={drawerOpen} onClose={() => setDrawerOpen(false)} />
 				</>
 			)}
 			<IconButton sx={{ color: "white" }} onClick={handleClick}>

@@ -1,48 +1,68 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useState, useEffect } from "react";
+import { jwtDecode } from "jwt-decode";
 
-const AuthContext = createContext();
+export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-	const [userRole, setUserRole] = useState(() => {
-		return localStorage.getItem("userRole") || "guest";
+	const [auth, setAuth] = useState(() => {
+		const stored = localStorage.getItem("auth");
+		return stored ? JSON.parse(stored) : {};
 	});
 
 	useEffect(() => {
-		const storedUsers = JSON.parse(localStorage.getItem("users")) || [];
-		if (storedUsers.length === 0) {
-			const defaultUsers = [
-				{ username: "admin", password: "Password1", role: "admin" },
-				{ username: "member", password: "Password1", role: "member" },
-			];
-			localStorage.setItem("users", JSON.stringify(defaultUsers));
+		if (auth?.accessToken) {
+			localStorage.setItem("auth", JSON.stringify(auth));
+		} else {
+			localStorage.removeItem("auth");
 		}
-	}, []);
+	}, [auth]);
 
-	useEffect(() => {
-		localStorage.setItem("userRole", userRole);
-	}, [userRole]);
+	const login = async ({ usernameOrEmail, password }) => {
+		try {
+			const response = await fetch("http://localhost:3000/auth", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({ identifier: usernameOrEmail, password }),
+			});
 
-	const login = (identifier, password) => {
-		const users = JSON.parse(localStorage.getItem("users")) || [];
-		const foundUser = users.find(
-			(u) => u.username === identifier && u.password === password
-		);
-		if (foundUser) {
-			setUserRole(foundUser.role);
-			return { success: true, role: foundUser.role };
+			const data = await response.json();
+
+			if (!response.ok) throw new Error(data.message || "Login failed");
+
+			const decoded = jwtDecode(data.accessToken);
+			const username = decoded.UserInfo.username;
+			const roles = decoded.UserInfo.roles;
+
+			const user = {
+				username,
+				roles,
+				accessToken: data.accessToken,
+			};
+
+			setAuth(user);
+			return { success: true, user };
+		} catch (error) {
+			console.error("Login error:", error);
+			return { success: false, message: error.message };
 		}
-		return { success: false };
 	};
 
 	const logout = () => {
-		localStorage.removeItem("userRole");
-		setUserRole("guest");
+		if (auth?.username) {
+			localStorage.removeItem(`cart_${auth.username}`);
+		}
+		setAuth(null);
 	};
 
-	const isAuthenticated = userRole !== "guest";
+	//define roles
+	const userRole = auth?.roles?.includes(5150)
+		? "admin"
+		: auth?.roles?.includes(2001)
+		? "member"
+		: "guest";
 
 	return (
-		<AuthContext.Provider value={{ userRole, isAuthenticated, login, logout }}>
+		<AuthContext.Provider value={{ auth, setAuth, login, logout, userRole }}>
 			{children}
 		</AuthContext.Provider>
 	);

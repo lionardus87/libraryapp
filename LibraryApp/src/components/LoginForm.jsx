@@ -2,38 +2,76 @@ import React, { useState } from "react";
 import { Box, Button, TextField } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
+// import { jwtDecode } from "jwt-decode";
 
-const LoginForm = () => {
+export default function LoginForm() {
+	const { login } = useAuth();
+	const navigate = useNavigate();
+
 	const [credentials, setCredentials] = useState({
 		identifier: "",
 		password: "",
 	});
-	const { login } = useAuth();
-	const navigate = useNavigate();
-	console.log(login);
+
 	const handleChange = (e) => {
 		setCredentials({ ...credentials, [e.target.name]: e.target.value });
 	};
 
-	const handleLogin = (e) => {
+	const handleSubmit = async (e) => {
 		e.preventDefault();
-		const { identifier, password } = credentials;
 
-		if (identifier === "admin" && password === "Password1") {
-			login("admin");
-			alert("Login successful as Admin!");
-			navigate("/");
-		} else if (identifier === "member" && password === "Password1") {
-			login("member");
-			alert("Login successful as Member!");
+		const result = await login(credentials);
+
+		if (result.success) {
+			alert(`Welcome ${result.user.username}`);
 			navigate("/");
 		} else {
-			alert("Invalid credentials");
+			alert("Login failed: " + result.message);
 		}
 	};
 
+	// const handleLogin = async (e) => {
+	// 	e.preventDefault();
+
+	// 	const { identifier, password } = credentials;
+
+	// 	try {
+	// 		const response = await fetch("http://localhost:3000/auth", {
+	// 			method: "POST",
+	// 			headers: {
+	// 				"content-Type": "application/json",
+	// 			},
+	// 			body: JSON.stringify({
+	// 				identifier,
+	// 				password,
+	// 			}),
+	// 		});
+
+	// 		const data = await response.json();
+
+	// 		if (response.ok) {
+	// 			const decoded = jwtDecode(data.accessToken);
+	// 			const username = decoded.UserInfo.username;
+	// 			const roles = decoded.UserInfo.roles;
+
+	// 			setAuth({
+	// 				username,
+	// 				roles,
+	// 				accessToken: data.accessToken,
+	// 			});
+	// 			alert(`Welcome ${username}`);
+	// 			navigate("/");
+	// 		} else {
+	// 			alert(data.message || "Login failed");
+	// 		}
+	// 	} catch (error) {
+	// 		console.error("Signup error", error);
+	// 		alert("Signup failed: " + error.message);
+	// 	}
+	// };
+
 	return (
-		<Box component="form" onSubmit={handleLogin} noValidate>
+		<Box component="form" onSubmit={handleSubmit} noValidate>
 			<TextField
 				label="Email or Username"
 				name="identifier"
@@ -60,6 +98,4 @@ const LoginForm = () => {
 			</Button>
 		</Box>
 	);
-};
-
-export default LoginForm;
+}
