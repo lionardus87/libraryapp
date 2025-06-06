@@ -3,26 +3,36 @@ import { jwtDecode } from "jwt-decode";
 
 export const AuthContext = createContext();
 
+const initialAuthState = {
+	username: null,
+	roles: [],
+	accessToken: null,
+};
+
 export const AuthProvider = ({ children }) => {
 	const [auth, setAuth] = useState(() => {
 		const stored = localStorage.getItem("auth");
-		return stored ? JSON.parse(stored) : {};
+		return stored ? JSON.parse(stored) : initialAuthState;
 	});
 
 	useEffect(() => {
+		// console.log(auth);
+		// console.log(userRole);
 		if (auth?.accessToken) {
+			//console.log("auth", auth);
 			localStorage.setItem("auth", JSON.stringify(auth));
 		} else {
 			localStorage.removeItem("auth");
+			//console.log("auth2", auth);
 		}
 	}, [auth]);
 
-	const login = async ({ usernameOrEmail, password }) => {
+	const login = async ({ identifier, password }) => {
 		try {
-			const response = await fetch("http://localhost:3000/auth", {
+			const response = await fetch("http://localhost:3001/auth", {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify({ identifier: usernameOrEmail, password }),
+				body: JSON.stringify({ identifier, password }),
 			});
 
 			const data = await response.json();
@@ -62,7 +72,7 @@ export const AuthProvider = ({ children }) => {
 		: "guest";
 
 	return (
-		<AuthContext.Provider value={{ auth, setAuth, login, logout, userRole }}>
+		<AuthContext.Provider value={{ auth, login, logout, userRole }}>
 			{children}
 		</AuthContext.Provider>
 	);
