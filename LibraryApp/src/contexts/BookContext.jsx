@@ -119,7 +119,15 @@ export const BookProvider = ({ children }) => {
 
 	return (
 		<BookContext.Provider
-			value={{ books, loading, addBook, setBooks, updateBook, deleteBook }}
+			value={{
+				books,
+				loading,
+				addBook,
+				setBooks,
+				updateBook,
+				deleteBook,
+				fetchBooks,
+			}}
 		>
 			{children}
 		</BookContext.Provider>
