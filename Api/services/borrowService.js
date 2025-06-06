@@ -1,39 +1,30 @@
 const BorrowLog = require("../model/BookLog");
-const Book = require("../model/Book");
 
-const createBorrowLogs = async (userId, books) => {
-	const logs = [];
+const findBorrowLog = async (filter) => {
+	return await BorrowLog.findOne(filter).exec();
+};
 
-	for (const book of books) {
-		const bookRecord = await Book.findById(book._id);
+const getAllBorrowLogsFromDB = async () => {
+	return await BorrowLog.find().populate("bookId").exec();
+};
 
-		if (!bookRecord) throw new Error(`Book with ID ${book._id} not found.`);
-		if (!bookRecord.available)
-			throw new Error(`Book "${bookRecord.title}" is already borrowed.`);
+const getUserBorrowLogsFromDB = async (userId) => {
+	return await BorrowLog.find({ userId }).populate("bookId").exec();
+};
 
-		// Mark book unavailable
-		bookRecord.available = false;
-		await bookRecord.save();
+const saveBorrowLog = async (logData) => {
+	const log = new BorrowLog(logData);
+	return await log.save();
+};
 
-		// Create BorrowLog
-		const borrowDate = new Date();
-		const returnDate = new Date(borrowDate);
-		returnDate.setDate(borrowDate.getDate() + 30);
-
-		const log = new BorrowLog({
-			userId,
-			bookId: bookRecord._id,
-			borrowDate,
-			returnDate,
-		});
-
-		await log.save();
-		logs.push(log);
-	}
-
-	return logs;
+const deleteBorrowLogById = async (id) => {
+	return await BorrowLog.findByIdAndDelete(id).exec();
 };
 
 module.exports = {
-	createBorrowLogs,
+	findBorrowLog,
+	getAllBorrowLogsFromDB,
+	getUserBorrowLogsFromDB,
+	saveBorrowLog,
+	deleteBorrowLogById,
 };

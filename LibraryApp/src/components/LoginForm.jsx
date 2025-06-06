@@ -30,46 +30,6 @@ export default function LoginForm() {
 		}
 	};
 
-	// const handleLogin = async (e) => {
-	// 	e.preventDefault();
-
-	// 	const { identifier, password } = credentials;
-
-	// 	try {
-	// 		const response = await fetch("http://localhost:3001/auth", {
-	// 			method: "POST",
-	// 			headers: {
-	// 				"content-Type": "application/json",
-	// 			},
-	// 			body: JSON.stringify({
-	// 				identifier,
-	// 				password,
-	// 			}),
-	// 		});
-
-	// 		const data = await response.json();
-
-	// 		if (response.ok) {
-	// 			const decoded = jwtDecode(data.accessToken);
-	// 			const username = decoded.UserInfo.username;
-	// 			const roles = decoded.UserInfo.roles;
-
-	// 			setAuth({
-	// 				username,
-	// 				roles,
-	// 				accessToken: data.accessToken,
-	// 			});
-	// 			alert(`Welcome ${username}`);
-	// 			navigate("/");
-	// 		} else {
-	// 			alert(data.message || "Login failed");
-	// 		}
-	// 	} catch (error) {
-	// 		console.error("Signup error", error);
-	// 		alert("Signup failed: " + error.message);
-	// 	}
-	// };
-
 	return (
 		<Box component="form" onSubmit={handleSubmit} noValidate>
 			<TextField

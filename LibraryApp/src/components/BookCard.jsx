@@ -140,7 +140,12 @@ export default function BookCard({ book }) {
 						<Box textAlign={"end"} sx={{ mt: 1 }}>
 							<Button
 								variant="outlined"
-								sx={{ backgroundColor: "white" }}
+								sx={{
+									position: "absolute",
+									bottom: 8,
+									right: 8,
+									backgroundColor: "white",
+								}}
 								onClick={handleClick}
 								disabled={!book.available}
 								color={book.available ? "primary" : "warning"}
